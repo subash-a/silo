@@ -1,11 +1,8 @@
-var rl = require("readline");
+
 var df = require("./core/difftext.js");
+var cli = require("./core/cli.js");
 var fsys = require("fs");
 
-intf = rl.createInterface({
-    "input":process.stdin,
-    "output":process.stdout
-});
 
 var createChangeLogDirectory = function(callback) {
     var dirname = ".changelog";
@@ -13,43 +10,76 @@ var createChangeLogDirectory = function(callback) {
     fsys.mkdir(currdir+dirname,callback);
 };
 
-var commitChanges = function (callback) {
-    var afterReadDirectory = function (err, files) {
-	console.log(files);
+var copyFile = function(src,dest,callback) {
+    var readStream = fsys.createReadStream(src);
+    var writeStream = fsys.createWriteStream(dest);
+    readStream.on("end",function(){
+	console.log("wrote file");
 	callback();
-    };
-    var files = fsys.readdir("./",afterReadDirectory);
+    });
+    readStream.pipe(writeStream);
 };
-intf.setPrompt("~ ",2);
-intf.prompt(true);
-intf.on("line", function(cmd){
-    switch(cmd) {
-	case "exit": intf.close();
-	break;
-	case "commit": console.log("This is a commit command");
-	var changesCommited = function() {
-	    intf.prompt(true);
+
+var commitChanges = function (callback) {
+    var currPath = "./";
+    var changeLogPath = "./.changeLog/";
+    var filesToChange = [];
+    var filesToAdd = [];
+    var getChanges = function (filename1,filename2) {
+	var fileChanges = diff(filename1,filename2);
+	fileChanges.filename = filename1;
+	changesToCommit.push(fileChanges);
+    };
+    
+    var copyFileToRepository = function (srcFile,destFile) {
+	copyFile(srcFile,destFile,function(){
+	    console.log("Added file %s to repository",filename);
+	});
+    };
+
+    var afterReadDirectory = function (err, files) {
+	var fileList = files;
+	var checkEndOfProcessing = function(length) {
+	    if(length === (filesToChange.length+filesToAdd.length)) {
+		console.log(changesToCommit);
+		console.log(filesToAdd);
+		callback();
+	    }
 	};
-	commitChanges(changesCommited);
-	break;
-	case "init": console.log("This is a init command");
-	var dirCreated = function () {
-	    console.log("directory is initialized with silo");
-	    intf.prompt(true);
+	var processFiles = function(f){
+	    var fileExists = function(exists){
+		if(exists) {
+		    filesToChange.push(currPath+f);
+		    checkEndOfProcessing(fileList.length);
+		}
+		else {
+		    filesToAdd.push(currPath+f);
+		    checkEndOfProcessing(fileList.length);
+		}
+	    };
+	    
+	    var directoryCheck = function(stats){
+		if(!stats.isDirectory()) {
+		    fsys.exists(changeLogPath+f,fileExists);
+		}
+		else {
+		    /* TODO
+		     * Need to add logic to explore the directory
+		     * and check files for changes, currently doing
+		     * it at the base directory.
+		     */
+		}
+	    };
+	    
+	    fsys.stat(f,directoryCheck);
+	    
 	};
-	createChangeLogDirectory(dirCreated);
-	break;
-	case "revert": console.log("This is a revert command");
-	intf.prompt(true);
-	break;
-	default: console.log(
-	    "Usage: commit - for commiting a file changes\n" +
-	    "       exit - for exiting the cmdline\n" +
-	    "       init - for initializing the change mgmt system\n" +
-	    "       revert - for reverting to the last change recursively"
-	);
-	intf.prompt(true);
-	break;
-    }
-});
+	
+	fileList.map(processFiles);
+    };
+  
+    var files = fsys.readdir(currPath,afterReadDirectory);
+};
+
+cli.startCLI();
 
