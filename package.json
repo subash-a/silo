@@ -1,0 +1,24 @@
+{
+    "name": "silo",
+    "version":"1.0.0",
+    "description":"a small file change management system",
+    "keywords":["small","changelog","file"],
+    "bugs":{
+       "author":"Subhash",
+  	"url":"http://github.com/subash-a/silo/issues",
+	"email":"s7subash@gmail.com"
+    },
+   "author":"Subash",
+    "license":"MIT",
+    "main": "./si.js",
+    "homepage":"http://github.com/subash-a/silo",
+    "contributors":{
+	"name":"subash"
+    },
+    "dependencies":{},
+    "engines":{},
+    "repository":{
+	"url":"http://github.com/subash-a/silo/",
+	"type":"github"
+    }
+}
