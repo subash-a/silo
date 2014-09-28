@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-var df = require("./core/difftext.js");
-var cli = require("./core/cli.js");
+var df = require("./lib/difftext.js");
+var cli = require("./lib/cli.js");
 var fsys = require("fs");
 
 
