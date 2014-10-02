@@ -1,27 +1,36 @@
 {
-    "name": "silo",
-    "version":"1.0.0",
-    "description":"a small file change management system",
-    "keywords":["small","changelog","file"],
-    "bugs":{
-       "author":"Subhash",
-  	"url":"http://github.com/subash-a/silo/issues",
-	"email":"s7subash@gmail.com"
-    },
-   "author":"Subash",
-    "license":"MIT",
-    "main": "./si.js",
-    "homepage":"http://github.com/subash-a/silo",
-    "contributors":{
-	"name":"subash"
-    },
-    "bin":{
-	"silo":"./bin/silo"
-    },
-    "dependencies":{},
-    "engines":{},
-    "repository":{
-	"url":"http://github.com/subash-a/silo/",
-	"type":"github"
-    }
+  "name": "silo",
+  "version": "1.0.0",
+  "description": "a small file change management system",
+  "keywords": [
+    "small",
+    "changelog",
+    "file"
+  ],
+  "bugs": {
+    "author": "Subhash",
+    "url": "http://github.com/subash-a/silo/issues",
+    "email": "s7subash@gmail.com"
+  },
+  "author": "Subash",
+  "license": "MIT",
+  "main": "./si.js",
+  "homepage": "http://github.com/subash-a/silo",
+  "contributors": {
+    "name": "subash"
+  },
+  "bin": {
+    "silo": "./bin/silo"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-jsdoc": "^0.5.7"
+  },
+  "engines": {},
+  "repository": {
+    "url": "http://github.com/subash-a/silo/",
+    "type": "github"
+  }
 }

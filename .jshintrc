@@ -1,0 +1,15 @@
+{
+    "curly": true,
+    "eqnull": true,
+    "eqeqeq": true,
+    "undef": true,
+    "globals": {
+    	"node": true,
+	"devel": true,
+	"console": true,
+	"require": true,
+	"exports": true,
+	"module": true,
+	"process": true
+    }
+}		
